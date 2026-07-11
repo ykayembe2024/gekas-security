@@ -1,0 +1,39 @@
+{
+  "files": {
+    "main.css": "/static/css/main.f29084e4.css",
+    "main.js": "/static/js/main.028dd1c3.js",
+    "static/js/453.1f3b9b72.chunk.js": "/static/js/453.1f3b9b72.chunk.js",
+    "static/media/Per11.png": "/static/media/Per11.2d5b80595df30626eda2.png",
+    "static/media/hola.png": "/static/media/hola.d297d834c5a4a3566fbe.png",
+    "static/media/Per14.png": "/static/media/Per14.89cb6834dc09ba1ebe3a.png",
+    "static/media/Per2.png": "/static/media/Per2.70c5eae1ed944a54f578.png",
+    "static/media/Hotesse2.png": "/static/media/Hotesse2.70499a27d7c8b76b886b.png",
+    "static/media/bg1.jpg": "/static/media/bg1.13360ef9b2473aa3aea2.jpg",
+    "static/media/conf.png": "/static/media/conf.a3ec3f7915e11b1025eb.png",
+    "static/media/MEMBERS-AZYEKOS_03-1.png": "/static/media/MEMBERS-AZYEKOS_03-1.17725b91744f42a3acff.png",
+    "static/media/MEMBERS-AZYEKOS_01-2.png": "/static/media/MEMBERS-AZYEKOS_01-2.201d2c701889b156d3df.png",
+    "static/media/Persona.png": "/static/media/Persona.928f99cf3e01ceb2a3c6.png",
+    "static/media/service2.jpg": "/static/media/service2.431bc2582bb679862fb7.jpg",
+    "static/media/MEMBERS-AZYEKOS_02-2.png": "/static/media/MEMBERS-AZYEKOS_02-2.2135710838385ea04f83.png",
+    "static/media/ceo.jpg": "/static/media/ceo.f76df82e035238d65e55.jpg",
+    "static/media/service3.jpg": "/static/media/service3.c77dac5f235ccef80139.jpg",
+    "static/media/service1.jpg": "/static/media/service1.209c2bc5811b60fa3a7b.jpg",
+    "static/media/perso.png": "/static/media/perso.0d5ab7b0c63a718cff1a.png",
+    "static/media/AL.png": "/static/media/AL.ff661be01bdf1d12d5a7.png",
+    "static/media/logo2.png": "/static/media/logo2.45182880bb78fbcbd5a8.png",
+    "static/media/service4.jpg": "/static/media/service4.8c6165346b02e3b2747c.jpg",
+    "static/media/inter.jpg": "/static/media/inter.3679dc34a94e87e008a3.jpg",
+    "static/media/equipement.jpg": "/static/media/equipement.892bc064f238ccaf916e.jpg",
+    "static/media/melo.png": "/static/media/melo.babc890bf0779ce1cba2.png",
+    "static/media/titok.png": "/static/media/titok.64473fe950ebc866dd77.png",
+    "static/media/az.png": "/static/media/az.fd5685adb83fb472587a.png",
+    "index.html": "/index.html",
+    "main.f29084e4.css.map": "/static/css/main.f29084e4.css.map",
+    "main.028dd1c3.js.map": "/static/js/main.028dd1c3.js.map",
+    "453.1f3b9b72.chunk.js.map": "/static/js/453.1f3b9b72.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f29084e4.css",
+    "static/js/main.028dd1c3.js"
+  ]
+}
