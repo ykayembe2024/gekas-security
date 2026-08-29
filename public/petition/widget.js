@@ -24,6 +24,8 @@
       root = document.createElement("div");
       root.id = "gekas-pet-root";
       document.body.appendChild(root);
+    } else if (root.parentElement !== document.body || document.body.lastElementChild !== root) {
+      document.body.appendChild(root);
     }
     return root;
   }

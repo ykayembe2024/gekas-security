@@ -6,17 +6,29 @@
   --gp-ink: #1a1208;
   --gp-line: rgba(255,255,255,0.12);
   --gp-safe: env(safe-area-inset-bottom, 0px);
+  --gp-z: 2147483646;
   font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  z-index: 2147483000;
+  position: fixed;
+  inset: 0;
+  z-index: var(--gp-z);
+  pointer-events: none;
 }
 
 #gekas-pet-root * { box-sizing: border-box; }
+
+.gp-flash,
+.gp-bubble,
+.gp-overlay,
+.gp-modal {
+  pointer-events: auto;
+}
 
 .gp-flash {
   position: fixed;
   left: 12px;
   right: 12px;
   bottom: calc(12px + var(--gp-safe));
+  z-index: var(--gp-z);
   background: var(--gp-bg);
   color: var(--gp-text);
   border: 1px solid var(--gp-line);
@@ -75,6 +87,7 @@
   position: fixed;
   right: max(14px, env(safe-area-inset-right, 0px));
   bottom: calc(16px + var(--gp-safe));
+  z-index: var(--gp-z);
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -103,13 +116,16 @@
 .gp-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.62);
+  z-index: var(--gp-z);
+  background: rgba(0,0,0,0.72);
   display: grid;
   place-items: end center;
   padding: 0;
 }
 
 .gp-modal {
+  position: relative;
+  z-index: calc(var(--gp-z) + 1);
   width: 100%;
   max-width: 560px;
   max-height: min(92dvh, 900px);
