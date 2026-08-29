@@ -163,9 +163,20 @@ input:not([type="checkbox"]),
   border-radius: 8px;
   cursor: pointer;
   color: var(--text);
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
 }
 
 .gp-country-list li:hover { background: var(--accent-soft); }
+
+.gp-country-code {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
 
 .check {
   display: flex;

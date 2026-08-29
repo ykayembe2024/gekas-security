@@ -48,7 +48,7 @@ async function load() {
   if (typeof window.gekasInitCountrySelect === "function") {
     countrySelect = window.gekasInitCountrySelect(document.getElementById("country-seed"), {
       name: "country",
-      preferred: "République démocratique du Congo",
+      preferredCode: "CD",
     });
   }
   return data;

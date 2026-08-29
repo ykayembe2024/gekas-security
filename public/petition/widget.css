@@ -248,11 +248,22 @@
   cursor: pointer;
   color: var(--gp-text);
   font-size: 0.95rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
 }
 
 .gp-country-list li:hover,
 .gp-country-list li:focus {
   background: var(--gp-accent-soft);
+}
+
+.gp-country-code {
+  color: var(--gp-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .gp-check {

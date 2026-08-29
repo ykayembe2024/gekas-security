@@ -116,7 +116,7 @@
       if (typeof window.gekasInitCountrySelect === "function") {
         countrySelect = window.gekasInitCountrySelect(root.querySelector("#gp-country-seed"), {
           name: "country",
-          preferred: "République démocratique du Congo",
+          preferredCode: "CD",
         });
       }
     }
