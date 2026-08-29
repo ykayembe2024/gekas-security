@@ -86,6 +86,28 @@ function formatPct(n) {
   return `${Math.round(n * 100)} %`;
 }
 
+function metricValue(v) {
+  if (v == null) return 0;
+  if (typeof v === "number") return v;
+  if (typeof v === "object" && v.value != null) return Number(v.value) || 0;
+  return Number(v) || 0;
+}
+
+function deltaHint(current, previous) {
+  if (previous == null || previous === 0) return "";
+  const pct = ((current - previous) / previous) * 100;
+  return `${pct >= 0 ? "+" : ""}${Math.round(pct)} % vs période préc.`;
+}
+
+function normalizeSeries(pageviews) {
+  const raw = pageviews?.pageviews || pageviews?.data || pageviews || [];
+  if (!Array.isArray(raw)) return [];
+  return raw.map((row) => ({
+    x: row.x ?? row.t ?? row.date ?? row.time,
+    y: Number(row.y ?? row.pageviews ?? row.count ?? 0) || 0,
+  }));
+}
+
 function dayLabel(ts) {
   return new Intl.DateTimeFormat("fr-FR", { weekday: "short" }).format(new Date(ts));
 }
@@ -101,29 +123,27 @@ async function loadStats() {
     api(`/api/websites/${WEBSITE_ID}/metrics?startAt=${startAt}&endAt=${endAt}&type=country&limit=6`),
   ]);
 
-  document.getElementById("m-visitors").textContent = formatNumber(stats.visitors?.value ?? stats.visitors);
-  document.getElementById("m-views").textContent = formatNumber(stats.pageviews?.value ?? stats.pageviews);
-  document.getElementById("m-sessions").textContent = formatNumber(stats.visits?.value ?? stats.sessions?.value ?? stats.visits);
-  document.getElementById("m-bounce").textContent = formatPct(stats.bounces?.value != null && (stats.visits?.value || stats.sessions?.value)
-    ? stats.bounces.value / (stats.visits?.value || stats.sessions?.value)
-    : stats.bounceRate?.value ?? stats.bounce_rate);
+  const visitors = metricValue(stats.visitors);
+  const views = metricValue(stats.pageviews);
+  const visits = metricValue(stats.visits ?? stats.sessions);
+  const bounces = metricValue(stats.bounces);
+  const prev = stats.comparison || {};
 
-  const visChange = stats.visitors?.change;
-  const viewChange = stats.pageviews?.change;
-  document.getElementById("m-visitors-hint").textContent =
-    visChange == null ? "" : `${visChange >= 0 ? "+" : ""}${Math.round(visChange)} % vs période préc.`;
-  document.getElementById("m-views-hint").textContent =
-    viewChange == null ? "" : `${viewChange >= 0 ? "+" : ""}${Math.round(viewChange)} % vs période préc.`;
+  document.getElementById("m-visitors").textContent = formatNumber(visitors);
+  document.getElementById("m-views").textContent = formatNumber(views);
+  document.getElementById("m-sessions").textContent = formatNumber(visits);
+  document.getElementById("m-bounce").textContent = formatPct(
+    visits ? bounces / visits : metricValue(stats.bounceRate ?? stats.bounce_rate)
+  );
 
-  const series = pageviews?.pageviews || pageviews?.data || [];
-  const sessions = pageviews?.sessions || [];
-  const chartData = series.length
-    ? series.map((row, i) => ({
-        x: row.x ?? row.t ?? row.date,
-        y: row.y ?? row.pageviews ?? row.count ?? 0,
-        s: sessions[i]?.y ?? sessions[i]?.sessions ?? 0,
-      }))
-    : [];
+  document.getElementById("m-visitors-hint").textContent = deltaHint(visitors, metricValue(prev.visitors));
+  document.getElementById("m-views-hint").textContent = deltaHint(views, metricValue(prev.pageviews));
+
+  const series = normalizeSeries(pageviews);
+  const chartData = series.map((row) => ({
+    x: row.x,
+    y: row.y,
+  }));
 
   renderChart(chartData);
   renderList("top-pages", urls?.data || urls || [], (row) => row.x || row.url || "/");

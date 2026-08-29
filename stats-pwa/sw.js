@@ -1,4 +1,4 @@
-const CACHE = "gekas-stats-v1";
+const CACHE = "gekas-stats-v2";
 const ASSETS = [
   "/",
   "/index.html",
