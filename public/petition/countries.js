@@ -12,9 +12,11 @@
         if (!r.ok) throw new Error("Impossible de charger la liste des pays");
         return r.json();
       })
-      .then((map) => {
+      .then((data) => {
+        const map = data && data.countries ? data.countries : data;
         countries = Object.entries(map)
-          .map(([code, name]) => ({ code, name: String(name) }))
+          .filter(([code, name]) => typeof name === "string" && /^[A-Z]{2}$/.test(code))
+          .map(([code, name]) => ({ code, name }))
           .sort((a, b) => a.name.localeCompare(b.name, "fr"));
         return countries;
       })
