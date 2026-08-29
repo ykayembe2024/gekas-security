@@ -1,12 +1,13 @@
 :root {
-  --bg: #0b0f14;
-  --card: #121821;
-  --line: rgba(255, 255, 255, 0.1);
-  --text: #eef2f7;
-  --muted: #93a0b4;
-  --accent: #d4a017;
-  --accent-ink: #1a1208;
-  --danger: #ff6b6b;
+  --bg: #f3f7fd;
+  --card: #ffffff;
+  --line: #d5e2f5;
+  --text: #0b3d91;
+  --muted: #4a6fa5;
+  --accent: #1a5fd0;
+  --accent-soft: #e8f0fe;
+  --accent-ink: #ffffff;
+  --danger: #c62828;
   --radius: 16px;
   --safe-b: env(safe-area-inset-bottom, 0px);
   font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
@@ -27,6 +28,7 @@ body { min-height: 100dvh; }
 .top {
   padding: 14px 16px;
   border-bottom: 1px solid var(--line);
+  background: #fff;
 }
 
 .back {
@@ -49,19 +51,20 @@ body { min-height: 100dvh; }
   object-fit: cover;
   border-radius: var(--radius);
   border: 1px solid var(--line);
-  background: #000;
+  background: #fff;
 }
 
 h1 {
   margin: 14px 0 10px;
   font-size: clamp(1.45rem, 5vw, 2.1rem);
   line-height: 1.2;
+  color: var(--text);
 }
 
 .content {
   white-space: pre-wrap;
   line-height: 1.65;
-  color: #d7deea;
+  color: #234a86;
   font-size: 1.02rem;
 }
 
@@ -70,13 +73,12 @@ h1 {
   border: 1px solid var(--line);
   border-radius: calc(var(--radius) + 2px);
   padding: 18px;
+  box-shadow: 0 8px 28px rgba(11, 61, 145, 0.08);
 }
 
 .progress-block { margin-bottom: 16px; }
 
-.count-line {
-  font-size: 1.15rem;
-}
+.count-line { font-size: 1.15rem; color: var(--text); }
 
 .count-line strong {
   font-size: 1.6rem;
@@ -91,7 +93,7 @@ h1 {
 
 .bar {
   height: 10px;
-  background: rgba(255,255,255,0.08);
+  background: var(--accent-soft);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -100,13 +102,14 @@ h1 {
   display: block;
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #f0c14b, var(--accent));
+  background: var(--accent);
   transition: width 0.4s ease;
 }
 
 .form h2, .thanks h2 {
   margin: 0 0 14px;
   font-size: 1.15rem;
+  color: var(--text);
 }
 
 label {
@@ -118,17 +121,51 @@ label {
 
 input[type="text"],
 input[type="email"],
-input:not([type="checkbox"]) {
+input:not([type="checkbox"]),
+.gp-country-input {
   width: 100%;
   margin-bottom: 12px;
   border: 1px solid var(--line);
-  background: #182030;
+  background: #f5f9ff;
   color: var(--text);
   border-radius: 12px;
   padding: 12px 14px;
   font-size: 16px;
   outline: none;
 }
+
+.gp-country {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.gp-country-input { margin-bottom: 0; }
+
+.gp-country-list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 5;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  max-height: 220px;
+  overflow: auto;
+  box-shadow: 0 10px 24px rgba(11, 61, 145, 0.15);
+}
+
+.gp-country-list li {
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.gp-country-list li:hover { background: var(--accent-soft); }
 
 .check {
   display: flex;
@@ -168,23 +205,44 @@ input:not([type="checkbox"]) {
 
 .btn-block { width: 100%; }
 
-.btn-share {
-  background: #182030;
-  color: var(--text);
-  border: 1px solid var(--line);
+.thanks {
+  text-align: center;
 }
 
+.thanks p { color: var(--muted); }
+
 .share {
-  display: grid;
-  gap: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
 }
+
+.share-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #f5f9ff;
+  color: var(--accent);
+  display: inline-grid;
+  place-items: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.share-btn svg { width: 22px; height: 22px; fill: currentColor; }
+.share-btn.is-wa { color: #128c7e; }
+.share-btn.is-fb { color: #1877f2; }
+.share-btn.is-x { color: #111; }
 
 .sticky-cta {
   position: sticky;
   bottom: calc(12px + var(--safe-b));
   margin-top: 14px;
   width: 100%;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  box-shadow: 0 8px 24px rgba(11, 61, 145, 0.2);
 }
 
 .desktop-only { display: none; }
@@ -203,7 +261,4 @@ input:not([type="checkbox"]) {
   }
   .desktop-only { display: block; }
   .mobile-only { display: none; }
-  .share {
-    grid-template-columns: 1fr 1fr;
-  }
 }

@@ -2,6 +2,8 @@ const API = "/api/petition";
 
 const fmt = (n) => new Intl.NumberFormat("fr-FR").format(n || 0);
 
+let countrySelect = null;
+
 function setProgress(count, target) {
   const pct = Math.min(100, Math.round(((count || 0) / Math.max(target || 1, 1)) * 100));
   for (const id of ["p-count", "p-count-m"]) {
@@ -26,7 +28,7 @@ function setupShare(url, title) {
   document.getElementById("share-copy").onclick = async () => {
     try {
       await navigator.clipboard.writeText(url);
-      document.getElementById("share-copy").textContent = "Lien copié";
+      document.getElementById("share-copy").title = "Lien copié";
     } catch {
       prompt("Copiez le lien :", url);
     }
@@ -43,6 +45,12 @@ async function load() {
   document.getElementById("p-image").src = data.image || "/petition/cover.svg";
   setProgress(data.signatures_count, data.target_signatures);
   setupShare(data.share_url || location.href, data.title);
+  if (typeof window.gekasInitCountrySelect === "function") {
+    countrySelect = window.gekasInitCountrySelect(document.getElementById("country-seed"), {
+      name: "country",
+      preferred: "République démocratique du Congo",
+    });
+  }
   return data;
 }
 
@@ -51,13 +59,18 @@ document.getElementById("sign-form").addEventListener("submit", async (e) => {
   const err = document.getElementById("form-error");
   const btn = document.getElementById("submit-btn");
   err.textContent = "";
+  const country = countrySelect?.getValue?.() || "";
+  if (!country) {
+    err.textContent = "Veuillez sélectionner un pays dans la liste.";
+    return;
+  }
   btn.disabled = true;
   try {
     const body = {
       first_name: document.getElementById("first_name").value.trim(),
       last_name: document.getElementById("last_name").value.trim(),
       email: document.getElementById("email").value.trim(),
-      country: document.getElementById("country").value.trim(),
+      country,
       confirmed: document.getElementById("confirmed").checked,
     };
     const res = await fetch(`${API}/sign`, {

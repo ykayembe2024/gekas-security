@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b0f14" />
+  <meta name="theme-color" content="#1a5fd0" />
   <title>Reconnaître le GENOCOST en RDC — Pétition</title>
   <meta name="description" content="Signez la pétition pour la reconnaissance du GENOCOST en République Démocratique du Congo." />
   <meta property="og:title" content="Reconnaître le GENOCOST en RDC" />
@@ -45,8 +45,8 @@
         <input id="last_name" name="last_name" autocomplete="family-name" required />
         <label for="email">E-mail</label>
         <input id="email" name="email" type="email" autocomplete="email" required />
-        <label for="country">Pays</label>
-        <input id="country" name="country" autocomplete="country-name" required placeholder="ex. RDC" />
+        <label for="country-seed">Pays</label>
+        <input id="country-seed" type="text" />
         <label class="check">
           <input type="checkbox" id="confirmed" name="confirmed" required />
           <span>Je confirme vouloir signer cette pétition.</span>
@@ -55,19 +55,28 @@
         <button class="btn btn-primary btn-block" type="submit" id="submit-btn">Signer cette pétition</button>
       </form>
 
-      <div id="thanks" class="thanks hidden">
+      <div id="thanks" class="thanks hidden" aria-live="polite">
         <h2>Merci pour votre soutien !</h2>
         <p>Votre signature a bien été enregistrée.</p>
-        <div class="share">
-          <a class="btn btn-share" id="share-wa" target="_blank" rel="noopener">WhatsApp</a>
-          <a class="btn btn-share" id="share-fb" target="_blank" rel="noopener">Facebook</a>
-          <a class="btn btn-share" id="share-x" target="_blank" rel="noopener">X</a>
-          <button class="btn btn-share" type="button" id="share-copy">Copier le lien</button>
+        <div class="share" aria-label="Partager">
+          <a class="share-btn is-wa" id="share-wa" target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24"><path d="M20.5 3.5A11 11 0 0 0 2.1 17.2L1 23l5.9-1.1A11 11 0 1 0 20.5 3.5zm-8.6 17a9.1 9.1 0 0 1-4.6-1.3l-.3-.2-3.5.7.7-3.4-.2-.3a9.1 9.1 0 1 1 7.9 4.5zm5-6.8c-.3-.1-1.6-.8-1.9-.9s-.4-.1-.6.2-.7.9-.8 1-.3.2-.6.1a7.4 7.4 0 0 1-2.2-1.4 8.2 8.2 0 0 1-1.5-1.9c-.2-.3 0-.4.1-.6l.4-.5.2-.3c.1-.2 0-.4 0-.5l-.9-2.1c-.2-.6-.5-.5-.6-.5h-.5c-.2 0-.5.1-.7.3s-1 1-1 2.4 1 2.7 1.2 2.9a10.7 10.7 0 0 0 4.1 3.5c1.5.6 2.1.5 2.5.4a2.2 2.2 0 0 0 1.4-1c.2-.3.2-.5.1-.6l-.5-.3z"/></svg>
+          </a>
+          <a class="share-btn is-fb" id="share-fb" target="_blank" rel="noopener" title="Facebook" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v7h3v-7h3.1l.9-3H13v-2c0-.6.4-1 1-1z"/></svg>
+          </a>
+          <a class="share-btn is-x" id="share-x" target="_blank" rel="noopener" title="X" aria-label="X">
+            <svg viewBox="0 0 24 24"><path d="M18.2 2H21l-6.6 7.5L22 22h-6.2l-4.9-6.4L5.3 22H2.5l7-8L2 2h6.3l4.4 5.8L18.2 2zm-1.1 18h1.7L7 3.9H5.2L17.1 20z"/></svg>
+          </a>
+          <button class="share-btn" type="button" id="share-copy" title="Copier le lien" aria-label="Copier le lien">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          </button>
         </div>
       </div>
     </aside>
   </main>
 
+  <script src="/petition/countries.js"></script>
   <script src="/petition/petition.js" type="module"></script>
 </body>
 </html>
