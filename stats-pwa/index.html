@@ -20,7 +20,7 @@
         <img src="/icons/icon-192.png" alt="GEKAS" />
         <h1>GEKAS Stats</h1>
       </div>
-      <p class="subtitle">Audience du site — accès privé</p>
+      <p class="subtitle">Audience & pétition — accès privé</p>
       <label for="username">Identifiant</label>
       <input id="username" name="username" autocomplete="username" required value="admin" />
       <label for="password">Mot de passe</label>
@@ -31,55 +31,101 @@
   </main>
 
   <main id="app-view" class="hidden">
-    <header class="topbar">
-      <div>
-        <h1>Audience</h1>
-        <div class="status-line" id="updated-at" style="text-align:left;margin:4px 0 0">—</div>
+    <nav class="nav-tabs" id="nav-tabs">
+      <button type="button" class="nav-tab active" data-tab="audience">Audience</button>
+      <button type="button" class="nav-tab" data-tab="petition">Pétition</button>
+    </nav>
+
+    <section id="tab-audience">
+      <header class="topbar">
+        <div>
+          <h1>Audience</h1>
+          <div class="status-line" id="updated-at" style="text-align:left;margin:4px 0 0">—</div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-ghost" type="button" id="notify-btn">Activer alertes</button>
+          <button class="btn btn-ghost" type="button" id="logout-btn">Quitter</button>
+        </div>
+      </header>
+
+      <div class="period" id="period-bar" role="tablist" aria-label="Période">
+        <button class="chip active" type="button" data-days="1">Aujourd'hui</button>
+        <button class="chip" type="button" data-days="7">7 jours</button>
+        <button class="chip" type="button" data-days="30">30 jours</button>
       </div>
-      <div class="topbar-actions">
-        <button class="btn btn-ghost" type="button" id="notify-btn">Activer alertes</button>
-        <button class="btn btn-ghost" type="button" id="logout-btn">Quitter</button>
-      </div>
-    </header>
 
-    <div class="period" id="period-bar" role="tablist" aria-label="Période">
-      <button class="chip active" type="button" data-days="1">Aujourd'hui</button>
-      <button class="chip" type="button" data-days="7">7 jours</button>
-      <button class="chip" type="button" data-days="30">30 jours</button>
-    </div>
+      <section class="grid">
+        <article class="card">
+          <div class="metric-label">Visiteurs</div>
+          <div class="metric-value" id="m-visitors">—</div>
+          <div class="metric-hint" id="m-visitors-hint"></div>
+        </article>
+        <article class="card">
+          <div class="metric-label">Pages vues</div>
+          <div class="metric-value" id="m-views">—</div>
+          <div class="metric-hint" id="m-views-hint"></div>
+        </article>
+        <article class="card">
+          <div class="metric-label">Sessions</div>
+          <div class="metric-value" id="m-sessions">—</div>
+        </article>
+        <article class="card">
+          <div class="metric-label">Taux de rebond</div>
+          <div class="metric-value" id="m-bounce">—</div>
+        </article>
 
-    <section class="grid">
-      <article class="card">
-        <div class="metric-label">Visiteurs</div>
-        <div class="metric-value" id="m-visitors">—</div>
-        <div class="metric-hint" id="m-visitors-hint"></div>
-      </article>
-      <article class="card">
-        <div class="metric-label">Pages vues</div>
-        <div class="metric-value" id="m-views">—</div>
-        <div class="metric-hint" id="m-views-hint"></div>
-      </article>
-      <article class="card">
-        <div class="metric-label">Sessions</div>
-        <div class="metric-value" id="m-sessions">—</div>
-      </article>
-      <article class="card">
-        <div class="metric-label">Taux de rebond</div>
-        <div class="metric-value" id="m-bounce">—</div>
-      </article>
+        <article class="card span-2 span-4">
+          <h2 class="section-title">Visites par jour</h2>
+          <div class="bars" id="chart-bars" aria-label="Graphique des visites"></div>
+        </article>
 
-      <article class="card span-2 span-4">
-        <h2 class="section-title">Visites par jour</h2>
-        <div class="bars" id="chart-bars" aria-label="Graphique des visites"></div>
-      </article>
+        <article class="card span-2">
+          <h2 class="section-title">Pages populaires</h2>
+          <ul class="list" id="top-pages"></ul>
+        </article>
+        <article class="card span-2">
+          <h2 class="section-title">Pays</h2>
+          <ul class="list" id="top-countries"></ul>
+        </article>
+      </section>
+    </section>
 
-      <article class="card span-2">
-        <h2 class="section-title">Pages populaires</h2>
-        <ul class="list" id="top-pages"></ul>
-      </article>
-      <article class="card span-2">
-        <h2 class="section-title">Pays</h2>
-        <ul class="list" id="top-countries"></ul>
+    <section id="tab-petition" class="hidden">
+      <header class="topbar">
+        <div>
+          <h1>Pétition</h1>
+          <div class="status-line" id="pet-count-line" style="text-align:left;margin:4px 0 0">—</div>
+        </div>
+        <div class="topbar-actions">
+          <a class="btn btn-ghost" href="https://gekas-security.com/petition/" target="_blank" rel="noopener">Voir la page</a>
+          <button class="btn btn-ghost" type="button" id="logout-btn-2">Quitter</button>
+        </div>
+      </header>
+
+      <form id="petition-form" class="card petition-form">
+        <label for="pet-title">Titre</label>
+        <input id="pet-title" required />
+        <label for="pet-content">Texte</label>
+        <textarea id="pet-content" rows="10" required></textarea>
+        <label for="pet-target">Objectif de signatures</label>
+        <input id="pet-target" type="number" min="1" required />
+        <label for="pet-image-url">URL de l'image</label>
+        <input id="pet-image-url" />
+        <label for="pet-image-file">Ou téléverser une image</label>
+        <input id="pet-image-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+        <div class="petition-preview">
+          <img id="pet-preview" alt="Aperçu" />
+        </div>
+        <p class="error" id="pet-error" aria-live="polite"></p>
+        <button class="btn btn-block" type="submit" id="pet-save">Enregistrer</button>
+      </form>
+
+      <article class="card" style="margin-top:12px">
+        <div class="sig-head">
+          <h2 class="section-title" style="margin:0">Signatures</h2>
+          <button class="btn btn-ghost" type="button" id="pet-export">Exporter CSV</button>
+        </div>
+        <div class="sig-list" id="sig-list"></div>
       </article>
     </section>
 

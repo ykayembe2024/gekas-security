@@ -222,10 +222,122 @@ loginForm.addEventListener("submit", async (e) => {
   }
 });
 
-logoutBtn.addEventListener("click", () => {
+function logout() {
   setToken(null);
   stopAutoRefresh();
   showApp(false);
+}
+
+logoutBtn.addEventListener("click", logout);
+document.getElementById("logout-btn-2")?.addEventListener("click", logout);
+
+const tabAudience = document.getElementById("tab-audience");
+const tabPetition = document.getElementById("tab-petition");
+const navTabs = document.getElementById("nav-tabs");
+
+navTabs?.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".nav-tab");
+  if (!btn) return;
+  navTabs.querySelectorAll(".nav-tab").forEach((b) => b.classList.toggle("active", b === btn));
+  const tab = btn.dataset.tab;
+  tabAudience.classList.toggle("hidden", tab !== "audience");
+  tabPetition.classList.toggle("hidden", tab !== "petition");
+  if (tab === "petition") {
+    try {
+      await loadPetitionAdmin();
+    } catch (err) {
+      toast(err.message);
+    }
+  }
+});
+
+async function loadPetitionAdmin() {
+  const data = await api("/api/petition");
+  document.getElementById("pet-title").value = data.title || "";
+  document.getElementById("pet-content").value = data.content || "";
+  document.getElementById("pet-target").value = data.target_signatures || 15000;
+  document.getElementById("pet-image-url").value = data.image || "";
+  document.getElementById("pet-preview").src = data.image || "/icons/icon-192.png";
+  document.getElementById("pet-count-line").textContent =
+    `${formatNumber(data.signatures_count)} / ${formatNumber(data.target_signatures)} signatures`;
+  const sigs = await api("/api/petition/signatures?page=1&pageSize=50");
+  const list = document.getElementById("sig-list");
+  if (!sigs.data?.length) {
+    list.innerHTML = `<div class="sig-card">Aucune signature pour le moment.</div>`;
+  } else {
+    list.innerHTML = sigs.data
+      .map((s) => {
+        const when = new Intl.DateTimeFormat("fr-FR", {
+          dateStyle: "short",
+          timeStyle: "short",
+        }).format(new Date(s.created_at));
+        return `<div class="sig-card"><strong>${escapeHtml(s.first_name)} ${escapeHtml(s.last_name)}</strong><span>${escapeHtml(s.email)} · ${escapeHtml(s.country)} · ${when}</span></div>`;
+      })
+      .join("");
+  }
+}
+
+document.getElementById("pet-image-url")?.addEventListener("input", (e) => {
+  document.getElementById("pet-preview").src = e.target.value || "/icons/icon-192.png";
+});
+
+document.getElementById("pet-image-file")?.addEventListener("change", async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async () => {
+    try {
+      const data = await api("/api/petition/image", {
+        method: "POST",
+        body: JSON.stringify({ dataUrl: reader.result }),
+      });
+      document.getElementById("pet-image-url").value = data.image;
+      document.getElementById("pet-preview").src = data.image;
+      toast("Image mise à jour");
+    } catch (err) {
+      toast(err.message);
+    }
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById("petition-form")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const err = document.getElementById("pet-error");
+  err.textContent = "";
+  try {
+    await api("/api/petition", {
+      method: "PUT",
+      body: JSON.stringify({
+        title: document.getElementById("pet-title").value.trim(),
+        content: document.getElementById("pet-content").value,
+        image: document.getElementById("pet-image-url").value.trim(),
+        target_signatures: Number(document.getElementById("pet-target").value),
+      }),
+    });
+    toast("Pétition enregistrée");
+    await loadPetitionAdmin();
+  } catch (ex) {
+    err.textContent = ex.message;
+  }
+});
+
+document.getElementById("pet-export")?.addEventListener("click", async () => {
+  try {
+    const token = getToken();
+    const res = await fetch("/api/petition/signatures.csv", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error("Export impossible");
+    const blob = await res.blob();
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "petition-signatures.csv";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  } catch (err) {
+    toast(err.message);
+  }
 });
 
 periodBar.addEventListener("click", async (e) => {

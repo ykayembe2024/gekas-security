@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: gekas-petition-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: gekas_petition
+      POSTGRES_USER: gekas
+      POSTGRES_PASSWORD: gekas_petition_2026
+    ports:
+      - "127.0.0.1:55437:5432"
+    volumes:
+      - gekas-petition-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gekas -d gekas_petition"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  gekas-petition-db-data:

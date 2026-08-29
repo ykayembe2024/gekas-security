@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0f14" />
+  <title>Reconnaître le GENOCOST en RDC — Pétition</title>
+  <meta name="description" content="Signez la pétition pour la reconnaissance du GENOCOST en République Démocratique du Congo." />
+  <meta property="og:title" content="Reconnaître le GENOCOST en RDC" />
+  <meta property="og:description" content="Signez la pétition. Chaque signature compte." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://gekas-security.com/petition/" />
+  <link rel="stylesheet" href="/petition/petition.css" />
+</head>
+<body>
+  <header class="top">
+    <a class="back" href="/">← GEKAS Security</a>
+  </header>
+
+  <main class="layout" id="app">
+    <section class="story">
+      <img id="p-image" class="hero" src="/petition/cover.svg" alt="GENOCOST" />
+      <h1 id="p-title">Reconnaître le GENOCOST en RDC</h1>
+      <div class="progress-block mobile-only">
+        <div class="count-line"><strong id="p-count-m">0</strong> signatures</div>
+        <div class="target-line">Objectif : <span id="p-target-m">15 000</span></div>
+        <div class="bar"><span id="p-bar-m"></span></div>
+        <a class="btn btn-primary sticky-cta" href="#sign-form">Signer la pétition</a>
+      </div>
+      <div id="p-content" class="content"></div>
+    </section>
+
+    <aside class="panel" id="sign-panel">
+      <div class="progress-block desktop-only">
+        <div class="count-line"><strong id="p-count">0</strong> signatures</div>
+        <div class="target-line">Objectif : <span id="p-target">15 000</span></div>
+        <div class="bar"><span id="p-bar"></span></div>
+      </div>
+
+      <form id="sign-form" class="form">
+        <h2>Signer cette pétition</h2>
+        <label for="first_name">Prénom</label>
+        <input id="first_name" name="first_name" autocomplete="given-name" required />
+        <label for="last_name">Nom</label>
+        <input id="last_name" name="last_name" autocomplete="family-name" required />
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" autocomplete="email" required />
+        <label for="country">Pays</label>
+        <input id="country" name="country" autocomplete="country-name" required placeholder="ex. RDC" />
+        <label class="check">
+          <input type="checkbox" id="confirmed" name="confirmed" required />
+          <span>Je confirme vouloir signer cette pétition.</span>
+        </label>
+        <p class="error" id="form-error" aria-live="polite"></p>
+        <button class="btn btn-primary btn-block" type="submit" id="submit-btn">Signer cette pétition</button>
+      </form>
+
+      <div id="thanks" class="thanks hidden">
+        <h2>Merci pour votre soutien !</h2>
+        <p>Votre signature a bien été enregistrée.</p>
+        <div class="share">
+          <a class="btn btn-share" id="share-wa" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn btn-share" id="share-fb" target="_blank" rel="noopener">Facebook</a>
+          <a class="btn btn-share" id="share-x" target="_blank" rel="noopener">X</a>
+          <button class="btn btn-share" type="button" id="share-copy">Copier le lien</button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="/petition/petition.js" type="module"></script>
+</body>
+</html>
