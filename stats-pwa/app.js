@@ -119,7 +119,7 @@ async function loadStats() {
   const [stats, pageviews, urls, countries] = await Promise.all([
     api(`/api/websites/${WEBSITE_ID}/stats?startAt=${startAt}&endAt=${endAt}`),
     api(`/api/websites/${WEBSITE_ID}/pageviews?startAt=${startAt}&endAt=${endAt}&unit=${unit}&timezone=${encodeURIComponent(Intl.DateTimeFormat().resolvedOptions().timeZone)}`),
-    api(`/api/websites/${WEBSITE_ID}/metrics?startAt=${startAt}&endAt=${endAt}&type=url&limit=6`),
+    api(`/api/websites/${WEBSITE_ID}/metrics?startAt=${startAt}&endAt=${endAt}&type=path&limit=6`),
     api(`/api/websites/${WEBSITE_ID}/metrics?startAt=${startAt}&endAt=${endAt}&type=country&limit=6`),
   ]);
 
