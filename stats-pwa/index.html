@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0f14" />
+  <meta name="description" content="Tableau de bord audience GEKAS Security" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>GEKAS Stats</title>
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <link rel="stylesheet" href="/app.css" />
+</head>
+<body>
+  <main id="login-view">
+    <form class="login-card" id="login-form">
+      <div class="brand">
+        <img src="/icons/icon-192.png" alt="GEKAS" />
+        <h1>GEKAS Stats</h1>
+      </div>
+      <p class="subtitle">Audience du site — accès privé</p>
+      <label for="username">Identifiant</label>
+      <input id="username" name="username" autocomplete="username" required value="admin" />
+      <label for="password">Mot de passe</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required />
+      <p class="error" id="login-error" aria-live="polite"></p>
+      <button class="btn btn-block" type="submit" id="login-btn">Connexion</button>
+    </form>
+  </main>
+
+  <main id="app-view" class="hidden">
+    <header class="topbar">
+      <div>
+        <h1>Audience</h1>
+        <div class="status-line" id="updated-at" style="text-align:left;margin:4px 0 0">—</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost" type="button" id="notify-btn">Activer alertes</button>
+        <button class="btn btn-ghost" type="button" id="logout-btn">Quitter</button>
+      </div>
+    </header>
+
+    <div class="period" id="period-bar" role="tablist" aria-label="Période">
+      <button class="chip active" type="button" data-days="1">Aujourd'hui</button>
+      <button class="chip" type="button" data-days="7">7 jours</button>
+      <button class="chip" type="button" data-days="30">30 jours</button>
+    </div>
+
+    <section class="grid">
+      <article class="card">
+        <div class="metric-label">Visiteurs</div>
+        <div class="metric-value" id="m-visitors">—</div>
+        <div class="metric-hint" id="m-visitors-hint"></div>
+      </article>
+      <article class="card">
+        <div class="metric-label">Pages vues</div>
+        <div class="metric-value" id="m-views">—</div>
+        <div class="metric-hint" id="m-views-hint"></div>
+      </article>
+      <article class="card">
+        <div class="metric-label">Sessions</div>
+        <div class="metric-value" id="m-sessions">—</div>
+      </article>
+      <article class="card">
+        <div class="metric-label">Taux de rebond</div>
+        <div class="metric-value" id="m-bounce">—</div>
+      </article>
+
+      <article class="card span-2 span-4">
+        <h2 class="section-title">Visites par jour</h2>
+        <div class="bars" id="chart-bars" aria-label="Graphique des visites"></div>
+      </article>
+
+      <article class="card span-2">
+        <h2 class="section-title">Pages populaires</h2>
+        <ul class="list" id="top-pages"></ul>
+      </article>
+      <article class="card span-2">
+        <h2 class="section-title">Pays</h2>
+        <ul class="list" id="top-countries"></ul>
+      </article>
+    </section>
+
+    <p class="status-line">GEKAS Security — tableau de bord privé</p>
+  </main>
+
+  <div id="toast" class="toast hidden" role="status"></div>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
