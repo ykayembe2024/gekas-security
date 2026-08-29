@@ -77,43 +77,52 @@
         </div>`;
     } else if (mode === "bubble") {
       root.innerHTML = `
-        <button type="button" class="gp-bubble" data-act="open" aria-label="Ouvrir la pétition">
-          Signer<small>${fmt(petition.signatures_count)}</small>
-        </button>`;
+        <div class="gp-bubble-wrap" id="gp-bubble-wrap">
+          <span class="gp-thumb" aria-hidden="true">👍</span>
+          <button type="button" class="gp-bubble" data-act="open" aria-label="Signer la pétition">
+            <span class="gp-bubble-label">Signer<br>Pétition</span>
+            <small>${fmt(petition.signatures_count)}</small>
+          </button>
+        </div>`;
+      scheduleThumbNudge(root);
     } else {
       const { url, text } = shareLinks();
+      const alreadySigned = Boolean(saved().signed);
       root.innerHTML = `
         <div class="gp-overlay" data-act="backdrop">
           <div class="gp-modal" role="dialog" aria-modal="true">
             <div class="gp-modal-head">
-              <h2>${escapeHtml(petition.title)}</h2>
+              <h2>${alreadySigned ? "Merci pour votre soutien !" : escapeHtml(petition.title)}</h2>
               <button type="button" class="gp-close" data-act="minify" aria-label="Fermer">×</button>
             </div>
-            <img src="${escapeAttr(petition.image || "/petition/cover.svg")}" alt="" />
-            <div class="gp-flash-meta">${fmt(petition.signatures_count)} / ${fmt(petition.target_signatures)} signatures</div>
-            <div class="gp-bar"><span style="width:${progressPct()}%"></span></div>
-            <div class="gp-content">${escapeHtml(petition.content)}</div>
-            <form class="gp-form" id="gp-form">
-              <label>Prénom</label>
-              <input name="first_name" required autocomplete="given-name" />
-              <label>Nom</label>
-              <input name="last_name" required autocomplete="family-name" />
-              <label>E-mail</label>
-              <input name="email" type="email" required autocomplete="email" />
-              <label>Pays</label>
-              <input id="gp-country-seed" type="text" />
-              <label class="gp-check"><input type="checkbox" name="confirmed" required /> <span>Je confirme vouloir signer cette pétition.</span></label>
-              <div class="gp-error" id="gp-error"></div>
-              <button class="gp-btn gp-btn-primary" style="width:100%" type="submit">Signer cette pétition</button>
-            </form>
-            <div class="gp-thanks hidden" id="gp-thanks" aria-live="polite">
+            <div class="gp-sign-body${alreadySigned ? " hidden" : ""}" id="gp-sign-body">
+              <img src="${escapeAttr(petition.image || "/petition/cover.svg")}" alt="" />
+              <div class="gp-flash-meta">${fmt(petition.signatures_count)} / ${fmt(petition.target_signatures)} signatures</div>
+              <div class="gp-bar"><span style="width:${progressPct()}%"></span></div>
+              <div class="gp-content">${escapeHtml(petition.content)}</div>
+              <form class="gp-form" id="gp-form">
+                <label>Prénom</label>
+                <input name="first_name" required autocomplete="given-name" />
+                <label>Nom</label>
+                <input name="last_name" required autocomplete="family-name" />
+                <label>E-mail</label>
+                <input name="email" type="email" required autocomplete="email" />
+                <label>Pays</label>
+                <input id="gp-country-seed" type="text" />
+                <label class="gp-check"><input type="checkbox" name="confirmed" required /> <span>Je confirme vouloir signer cette pétition.</span></label>
+                <div class="gp-error" id="gp-error"></div>
+                <button class="gp-btn gp-btn-primary" style="width:100%" type="submit">Signer cette pétition</button>
+              </form>
+            </div>
+            <div class="gp-thanks${alreadySigned ? "" : " hidden"}" id="gp-thanks" aria-live="polite">
               <h3>Merci pour votre soutien !</h3>
               <p>Votre signature a bien été enregistrée.</p>
+              <div class="gp-flash-meta">${fmt(petition.signatures_count)} / ${fmt(petition.target_signatures)} signatures</div>
               ${shareRow(url, text)}
             </div>
           </div>
         </div>`;
-      if (typeof window.gekasInitCountrySelect === "function") {
+      if (!alreadySigned && typeof window.gekasInitCountrySelect === "function") {
         countrySelect = window.gekasInitCountrySelect(root.querySelector("#gp-country-seed"), {
           name: "country",
           preferredCode: "CD",
@@ -171,19 +180,36 @@
           const data = await res.json();
           if (!res.ok) throw new Error(data.message || "Erreur");
           petition = data.petition;
-          form.classList.add("hidden");
-          root.querySelector("#gp-thanks").classList.remove("hidden");
-          const meta = root.querySelector(".gp-flash-meta");
-          if (meta) {
-            meta.textContent = `${fmt(petition.signatures_count)} / ${fmt(petition.target_signatures)} signatures`;
+          save({ signed: true, minimized: true });
+          const signBody = root.querySelector("#gp-sign-body");
+          if (signBody) signBody.classList.add("hidden");
+          const head = root.querySelector(".gp-modal-head h2");
+          if (head) head.textContent = "Merci pour votre soutien !";
+          const thanks = root.querySelector("#gp-thanks");
+          thanks.classList.remove("hidden");
+          const thanksMeta = thanks.querySelector(".gp-flash-meta");
+          if (thanksMeta) {
+            thanksMeta.textContent = `${fmt(petition.signatures_count)} / ${fmt(petition.target_signatures)} signatures`;
           }
-          const bar = root.querySelector(".gp-bar > span");
-          if (bar) bar.style.width = `${progressPct()}%`;
         } catch (ex) {
           err.textContent = ex.message || "Erreur";
         }
       });
     }
+  }
+
+  let thumbTimer = null;
+  function scheduleThumbNudge(root) {
+    if (thumbTimer) clearTimeout(thumbTimer);
+    const wrap = root.querySelector("#gp-bubble-wrap");
+    if (!wrap || saved().signed) return;
+    const run = () => {
+      if (mode !== "bubble") return;
+      wrap.classList.add("is-nudge");
+      setTimeout(() => wrap.classList.remove("is-nudge"), 2200);
+      thumbTimer = setTimeout(run, 14000 + Math.random() * 10000);
+    };
+    thumbTimer = setTimeout(run, 5000 + Math.random() * 4000);
   }
 
   function escapeHtml(s) {
@@ -219,7 +245,8 @@
       return;
     }
     const st = saved();
-    mode = st.minimized ? "bubble" : "flash";
+    // Après signature : pas de flash avec le texte, uniquement la bulle
+    mode = st.signed || st.minimized ? "bubble" : "flash";
     render();
     if (mode === "flash") {
       setTimeout(() => {
