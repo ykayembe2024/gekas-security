@@ -168,6 +168,14 @@ async function initDb() {
       UNIQUE (petition_id, email)
     );
   `);
+  await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_petition_signature_petition_id
+      ON petition_signature (petition_id);
+  `);
+  await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_petition_signature_created_at
+      ON petition_signature (created_at DESC);
+  `);
   const { rows } = await pool.query("SELECT id FROM petition ORDER BY id ASC LIMIT 1");
   if (!rows.length) {
     await pool.query(
